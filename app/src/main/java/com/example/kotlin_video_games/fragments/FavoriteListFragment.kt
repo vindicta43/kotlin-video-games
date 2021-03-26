@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
 import com.example.kotlin_video_games.R
+import com.example.kotlin_video_games.models.ModelGameItem
+import com.example.kotlin_video_games.models.MyAdapter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,23 +41,22 @@ class FavoriteListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_favorite_list, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FavoriteListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FavoriteListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // listView test code
+        // then I'll add API connection
+        var listView = view.findViewById<ListView>(R.id.listView)
+        var list = mutableListOf<ModelGameItem>()
+
+        // for testing listView
+        for (i in 0..50) {
+            list.add(ModelGameItem("minecraft", "10", "2005", R.drawable.ic_favorite))
+        }
+
+        listView.adapter =
+            activity?.let { MyAdapter(it.applicationContext, R.layout.game_item, list) }
+
+        //listView.setOnItemClickListener()
     }
 }
