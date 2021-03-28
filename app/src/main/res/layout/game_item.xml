@@ -22,7 +22,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="Name of Game"
-            android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -37,7 +36,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Rating"
-                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

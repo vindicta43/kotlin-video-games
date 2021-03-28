@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         val favoriteList = FavoriteListFragment()
         val favorite = FavoriteFragment()
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationBar)
-
+        //var viewPager = findViewById<ViewPa>()
 
         // listView test code
         // then I'll add API connection

@@ -9,10 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.kotlin_video_games.R
 
-class MyAdapter(var ctx: Context, var resorces:Int, var items:List<ModelGameItem>):ArrayAdapter<ModelGameItem>(ctx, resorces, items){
+class GameAdapter(var ctx: Context, var resorces:Int, var items:List<ModelGameItem>):ArrayAdapter<ModelGameItem>(ctx, resorces, items){
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater: LayoutInflater = LayoutInflater.from(ctx)
-        val view: View = layoutInflater.inflate(resorces, null)
+        val view: View = layoutInflater.inflate(resorces, null, true)
 
         val gameImage: ImageView = view.findViewById(R.id.gameItemImage)
         val gameName : TextView = view.findViewById(R.id.gameItemName)
