@@ -19,23 +19,13 @@ class MainActivity : AppCompatActivity() {
         val favoriteList = FavoriteListFragment()
         val favorite = FavoriteFragment()
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationBar)
-        //var viewPager = findViewById<ViewPa>()
-
-        // listView test code
-        // then I'll add API connection
-        var listView = findViewById<ListView>(R.id.listView)
-        var list = mutableListOf<ModelGameItem>()
-        list.add(ModelGameItem("minecraft", "10", "2005", R.drawable.ic_favorite))
-        list.add(ModelGameItem("lorem", "5", "2002", R.drawable.ic_home))
-        list.add(ModelGameItem("cod", "10", "2012", R.drawable.ic_favorite))
-
 
         makeFragment(homeFragment)
 
         bottomNav.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.ic_home -> makeFragment(homeFragment)
-                R.id.ic_favorite -> makeFragment(favoriteList)
+                R.id.ic_favorite -> makeFragment(favorite)
             }
             true
         }
