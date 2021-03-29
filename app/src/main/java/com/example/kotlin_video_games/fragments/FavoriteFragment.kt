@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.example.kotlin_video_games.R
 import com.example.kotlin_video_games.models.ApiModel
+import com.google.gson.Gson
 import com.squareup.okhttp.Callback
+import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
 import java.io.IOException
@@ -26,39 +28,30 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //ApiModel.client.newCall(ApiModel.request).enqueue(object : Callback {
-        //    override fun onFailure(request: Request?, e: IOException?) {
-        //        e?.printStackTrace()
-        //    }
-        //    override fun onResponse(response: Response?) {
-        //        if (response?.isSuccessful == true) {
-        //            var myResponse: String = response.body().string()
-        //            //var txt: TextView = view.findViewById(R.id.gameName)
-        //            //txt.setText(myResponse)
-        //        }
-        //    }
-        //})
+        connectClient()
+    }
 
-        // basic api connection for rapidapi
-        ApiModel.okClient.newCall(ApiModel.okRequest).enqueue(object: Callback {
+    // test connection and gson test
+    fun connectClient() {
+        val client = OkHttpClient()
+
+        val request = Request.Builder()
+            .url("https://api.rawg.io/api/games")
+            .get()
+            .addHeader("key", "1dce486d4f3f411c9d01d69e6849cf84")
+            .build()
+
+        val response = client.newCall(request).enqueue(object : Callback {
             override fun onFailure(request: Request?, e: IOException?) {
                 e?.printStackTrace()
             }
 
             override fun onResponse(response: Response?) {
-                val inputStream = response?.body()?.string()
-                var tvGameName = view.findViewById<TextView>(R.id.gameDesc)
-                runOnUiThread {
-                    tvGameName.setText(inputStream)
-                }
+                var body = response?.body()?.string()
+                var gson = Gson()
+
+                val data = gson.fromJson(body, com.example.kotlin_video_games.json_game_list.Response::class.java)
             }
         })
     }
-}
-
-// extension function for fragment
-fun Fragment?.runOnUiThread(action: () -> Unit) {
-    this ?: return
-    if (!isAdded) return // Fragment not attached to an Activity
-    activity?.runOnUiThread(action)
 }
