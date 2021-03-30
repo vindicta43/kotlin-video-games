@@ -15,7 +15,7 @@ import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
 import java.io.IOException
 
-class FavoriteFragment : Fragment() {
+class DetailFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,30 +28,5 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        connectClient()
-    }
-
-    // test connection and gson test
-    fun connectClient() {
-        val client = OkHttpClient()
-
-        val request = Request.Builder()
-            .url("https://api.rawg.io/api/games")
-            .get()
-            .addHeader("key", "1dce486d4f3f411c9d01d69e6849cf84")
-            .build()
-
-        val response = client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(request: Request?, e: IOException?) {
-                e?.printStackTrace()
-            }
-
-            override fun onResponse(response: Response?) {
-                var body = response?.body()?.string()
-                var gson = Gson()
-
-                val data = gson.fromJson(body, com.example.kotlin_video_games.json_game_list.Response::class.java)
-            }
-        })
     }
 }

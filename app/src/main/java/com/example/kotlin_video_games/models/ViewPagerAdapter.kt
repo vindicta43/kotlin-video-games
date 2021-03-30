@@ -6,10 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.PagerAdapter
+import com.example.kotlin_video_games.MainActivity
 import com.example.kotlin_video_games.R
+import com.example.kotlin_video_games.fragments.DetailFragment
+import com.squareup.picasso.Picasso
 
-class ViewPagerAdapter(val images: List<Int>, val titles: List<String>,val ctx: Context) : PagerAdapter() {
+class ViewPagerAdapter(val images: List<String>, val titles: List<String>, val ctx: Context?) :
+    PagerAdapter() {
 
     lateinit var layoutInflater: LayoutInflater
 
@@ -30,8 +36,8 @@ class ViewPagerAdapter(val images: List<Int>, val titles: List<String>,val ctx: 
         var view = layoutInflater.inflate(R.layout.viewpager_item, container, false)
         val img = view.findViewById<ImageView>(R.id.vpGame)
         val txt = view.findViewById<TextView>(R.id.vpTitle)
-        img.setImageResource(images.get(position))
-        txt.setText(titles.get(position))
+        Picasso.get().load(images[position]).into(img)
+        txt.setText(titles[position])
         container.addView(view, 0)
         return view
     }

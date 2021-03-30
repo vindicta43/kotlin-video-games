@@ -1,4 +1,4 @@
-package com.example.kotlin_video_games.fragments
+ package com.example.kotlin_video_games.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import com.example.kotlin_video_games.R
+import com.example.kotlin_video_games.models.GameAdapter
+import com.example.kotlin_video_games.models.ModelGameItem
 
-class FavoriteListFragment : Fragment() {
+ class FavoriteListFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,11 +23,13 @@ class FavoriteListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var listView = view.findViewById<ListView>(R.id.listView)
+        var listView = view.findViewById<ListView>(R.id.listViewFavorite)
+
+        var list = arrayListOf<ModelGameItem>()
 
         // fill later
-        //listView.adapter =
-        //    activity?.let { GameAdapter(it.applicationContext, R.layout.game_item, list) }
+        listView.adapter =
+            activity?.let { GameAdapter(it.applicationContext, R.layout.game_item, list) }
 
         //listView.setOnItemClickListener()
     }
