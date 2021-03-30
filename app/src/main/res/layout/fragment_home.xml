@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".fragments.HomeFragment">
 
+    <TextView
+        android:id="@+id/tvGameNotFound"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="GAME NOT FOUND"
+        android:visibility="invisible"
+        android:gravity="center"
+        android:textSize="64dp"/>
+
     <EditText
         android:id="@+id/etSearch"
         android:layout_width="250dp"

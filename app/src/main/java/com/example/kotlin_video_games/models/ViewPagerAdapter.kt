@@ -14,7 +14,7 @@ import com.example.kotlin_video_games.R
 import com.example.kotlin_video_games.fragments.DetailFragment
 import com.squareup.picasso.Picasso
 
-class ViewPagerAdapter(val images: List<String>, val titles: List<String>, val ctx: Context?) :
+class ViewPagerAdapter(val images: List<String?>, val titles: List<String?>, val ctx: Context?) :
     PagerAdapter() {
 
     lateinit var layoutInflater: LayoutInflater
