@@ -60,9 +60,9 @@ class DetailFragment : Fragment() {
 
                     runOnUiThread {
                         Picasso.get().load(data.backgroundImage).into(bgImage)
-                        gameName.text = data.name
-                        gameReleased.text = data.released
-                        gameMetacritic.text = data.metacritic.toString()
+                        gameName.text = "Name: ${data.name}"
+                        gameReleased.text = "Release Date: ${data.released}"
+                        gameMetacritic.text = "Metacritic Score: ${data.metacritic.toString()}"
                         gameDesc.text = data.description
                     }
                 }
