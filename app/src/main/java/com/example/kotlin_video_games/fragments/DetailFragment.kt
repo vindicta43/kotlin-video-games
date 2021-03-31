@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatTextView
+import android.widget.Toast
 import com.example.kotlin_video_games.R
 import com.example.kotlin_video_games.ResponseGameDetails
 import com.example.kotlin_video_games.database.Favorite
@@ -97,10 +97,12 @@ class DetailFragment : Fragment() {
                         if (favoriteList != null && favoriteList.contains(Favorite(ID))) {
                             favoriteDatabase.favoriteDao().delete(Favorite(ID))
                             fabFavorite.setImageResource(R.drawable.ic_favorite_border)
+                            Toast.makeText(view.context, "Game removed from favorites", Toast.LENGTH_SHORT).show()
                         }
                         else{
                             favoriteDatabase?.favoriteDao()?.insert(Favorite(ID))
                             fabFavorite.setImageResource(R.drawable.ic_favorite)
+                            Toast.makeText(view.context, "Game added to favorites", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

@@ -38,7 +38,7 @@ class FavoriteListFragment : Fragment() {
         fillFavoriteList()
     }
 
-    fun fillFavoriteList() {
+    private fun fillFavoriteList() {
         // db connection
         val favoriteDatabase = view?.context?.let { FavoriteDatabase.getFavoriteDatabase(it) }
         val favoriteList = favoriteDatabase?.favoriteDao()?.getFavorites()
@@ -70,8 +70,8 @@ class FavoriteListFragment : Fragment() {
                         }
 
                         override fun onResponse(response: Response?) {
-                            var body = response?.body()?.string()
-                            var gson = Gson()
+                            val body = response?.body()?.string()
+                            val gson = Gson()
 
                             val data = gson.fromJson(
                                 body, ResponseGameDetails::class.java
@@ -110,7 +110,8 @@ class FavoriteListFragment : Fragment() {
         // listview click event
         listView?.setOnItemClickListener { parent, view, position, id ->
             val bundle = Bundle()
-            list[position]?.let { bundle.putInt("gameID", it.id) }
+            val gameID = list[position]?.id as Int
+            bundle.putInt("gameID", gameID)
             val detailFragment = DetailFragment()
             detailFragment.arguments = bundle
             fragmentManager?.beginTransaction()?.apply {

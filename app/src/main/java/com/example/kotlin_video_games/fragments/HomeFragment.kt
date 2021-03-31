@@ -132,7 +132,8 @@ class HomeFragment : Fragment() {
         // viewpager click event
         myPager?.setOnClickListener {
             val bundle = Bundle()
-            bundle.putInt("gameID", list[viewPagerIndex].id)
+            val gameID = list[viewPagerIndex].id
+            bundle.putInt("gameID", gameID)
             val detailFragment = DetailFragment()
             detailFragment.arguments = bundle
             fragmentManager?.beginTransaction()?.apply {
@@ -160,8 +161,8 @@ class HomeFragment : Fragment() {
             }
 
             override fun onResponse(response: Response?) {
-                var body = response?.body()?.string()
-                var gson = Gson()
+                val body = response?.body()?.string()
+                val gson = Gson()
 
                 val data = gson.fromJson(
                     body,
@@ -232,7 +233,8 @@ class HomeFragment : Fragment() {
         // listview click event
         listView?.setOnItemClickListener { parent, view, position, id ->
             val bundle = Bundle()
-            list[position]?.let { bundle.putInt("gameID", it.id) }
+            val gameID = list[position]?.id as Int
+            bundle.putInt("gameID", gameID)
             val detailFragment = DetailFragment()
             detailFragment.arguments = bundle
             fragmentManager?.beginTransaction()?.apply {
@@ -242,7 +244,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun searchGame() {
+    private fun searchGame() {
         val etSearch = view?.findViewById<EditText>(R.id.etSearch)
 
         etSearch?.addTextChangedListener(object : TextWatcher {
@@ -260,8 +262,8 @@ class HomeFragment : Fragment() {
                     }
 
                     override fun onResponse(response: Response?) {
-                        var body = response?.body()?.string()
-                        var gson = Gson()
+                        val body = response?.body()?.string()
+                        val gson = Gson()
 
                         val data = gson.fromJson(
                             body,
