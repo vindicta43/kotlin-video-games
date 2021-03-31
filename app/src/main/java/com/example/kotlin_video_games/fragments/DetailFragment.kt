@@ -10,6 +10,9 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import com.example.kotlin_video_games.R
 import com.example.kotlin_video_games.ResponseGameDetails
+import com.example.kotlin_video_games.database.Favorite
+import com.example.kotlin_video_games.database.FavoriteDatabase
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.squareup.okhttp.Callback
 import com.squareup.okhttp.OkHttpClient
@@ -33,6 +36,14 @@ class DetailFragment : Fragment() {
         val bundle = this.arguments
         val gameID = bundle?.getInt("gameID")
 
+        // favorite floating action button
+        val fabFavorite = view.findViewById<FloatingActionButton>(R.id.fabFavorite)
+
+        // favoriteList for getting favorites
+        // and then change fab if the item contains/not
+        val favoriteDatabase = FavoriteDatabase.getFavoriteDatabase(view.context)
+        val favoriteList = favoriteDatabase?.favoriteDao()?.getFavorites()
+
         val client = OkHttpClient()
         val request = Request.Builder()
             .url("https://api.rawg.io/api/games/$gameID")
@@ -49,6 +60,9 @@ class DetailFragment : Fragment() {
                     val body = response?.body()?.string()
                     val gson = Gson()
 
+                    // game id
+                    var ID: Int = 0
+
                     // ui elements
                     val bgImage = view.findViewById<ImageView>(R.id.ivDetail)
                     val gameName = view.findViewById<TextView>(R.id.tvGameName)
@@ -64,6 +78,30 @@ class DetailFragment : Fragment() {
                         gameReleased.text = "Release Date: ${data.released}"
                         gameMetacritic.text = "Metacritic Score: ${data.metacritic.toString()}"
                         gameDesc.text = data.description
+
+                        ID = data.id as Int
+
+
+                        // if db contains the game
+                        if (favoriteList != null && favoriteList.contains(Favorite(ID))) {
+                            fabFavorite.setImageResource(R.drawable.ic_favorite)
+                        }
+                        else{
+                            fabFavorite.setImageResource(R.drawable.ic_favorite_border)
+                        }
+                    }
+
+                    // fab onclick for adding or removing from favorites
+                    fabFavorite.setOnClickListener {
+                        // if db contains the game
+                        if (favoriteList != null && favoriteList.contains(Favorite(ID))) {
+                            favoriteDatabase.favoriteDao().delete(Favorite(ID))
+                            fabFavorite.setImageResource(R.drawable.ic_favorite_border)
+                        }
+                        else{
+                            favoriteDatabase?.favoriteDao()?.insert(Favorite(ID))
+                            fabFavorite.setImageResource(R.drawable.ic_favorite)
+                        }
                     }
                 }
             }

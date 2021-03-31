@@ -23,7 +23,7 @@ class CustomViewPager @JvmOverloads constructor(context: Context?, attrs: Attrib
         SimpleOnGestureListener() {
         override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
             if (onClickListener != null) {
-                onClickListener!!.onClick(view)
+                onClickListener?.onClick(view)
             }
             return true
         }

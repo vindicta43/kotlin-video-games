@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.ic_home -> makeFragment(homeFragment)
-                R.id.ic_favorite -> makeFragment(favorite)
+                R.id.ic_favorite -> makeFragment(favoriteList)
             }
             true
         }

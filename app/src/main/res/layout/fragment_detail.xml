@@ -33,10 +33,11 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
-        android:src="@drawable/ic_favorite"
+        android:src="@drawable/ic_favorite_border"
         android:tint="@android:color/white"
         app:layout_anchor="@id/appBarLayout"
         app:layout_anchorGravity="bottom|right|end" />
