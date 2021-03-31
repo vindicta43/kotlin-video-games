@@ -19,6 +19,7 @@
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
             <ImageView
+                android:id="@+id/ivDetail"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:scaleType="centerCrop"
@@ -46,14 +47,14 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="8dp">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/gameName"
+            <TextView
+                android:id="@+id/tvGameName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -64,19 +65,19 @@
                 android:textSize="16sp"
                  />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/tvReleaseDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:text="Lorem İpsum Date"
+                android:text="Lorem İpsum Released"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/tvMetacriticRate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,8 +89,8 @@
                 android:textSize="16sp"
                 />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/gameDesc"
+            <TextView
+                android:id="@+id/tvGameDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/lorem"
@@ -97,7 +98,7 @@
                 android:paddingHorizontal="16dp"
                 android:textSize="16dp"/>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 

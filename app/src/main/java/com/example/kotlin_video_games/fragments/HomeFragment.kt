@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.viewpager.widget.ViewPager
 import com.example.kotlin_video_games.R
 import com.example.kotlin_video_games.models.CustomViewPager
 import com.example.kotlin_video_games.models.GameAdapter
@@ -20,8 +21,14 @@ import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
 import java.io.IOException
 
+/*
+    normalde benden kullanilmasi istenen API asagidaki linkdi
+    https://rawg-video-games-database.p.rapidapi.com/games
 
-// https://api.rawg.io/api/games?page=$pageNum
+    fakat arama sorgusunu bu link uzerinden calistiramadigim icin
+    API nin kendi sitesine kaydolup oradan verileri aliyorum
+    https://rawg.io/apidocs
+ */
 
 class HomeFragment : Fragment() {
     override fun onCreateView(
@@ -42,6 +49,7 @@ class HomeFragment : Fragment() {
     fun fillViewPager(url: String, count: Int) {
         val tvGameNotFound = view?.findViewById<TextView>(R.id.tvGameNotFound)
         val myPager = view?.findViewById<CustomViewPager>(R.id.viewPager)
+        val list = arrayListOf<ModelGameItem>()
         val client = OkHttpClient()
 
         val request = Request.Builder()
@@ -57,8 +65,8 @@ class HomeFragment : Fragment() {
             }
 
             override fun onResponse(response: Response?) {
-                var body = response?.body()?.string()
-                var gson = Gson()
+                val body = response?.body()?.string()
+                val gson = Gson()
 
                 val data = gson.fromJson(
                     body,
@@ -84,6 +92,15 @@ class HomeFragment : Fragment() {
                     for (i in 0..2) {
                         gameImageList.add(data.results[i].backgroundImage)
                         gameNameList.add("#${i + 1} ${data.results[i].name}")
+                        list.add(
+                            ModelGameItem(
+                                data.results[i].id,
+                                data.results[i].name,
+                                data.results[i].rating.toString(),
+                                data.results[i].released,
+                                data.results[i].backgroundImage
+                            )
+                        )
                     }
                     val pagerAdapter = ViewPagerAdapter(gameImageList, gameNameList, view?.context)
 
@@ -95,8 +112,29 @@ class HomeFragment : Fragment() {
                 }
             }
         })
+
+        var viewPagerIndex = 0
+        // getting page index
+        myPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+            override fun onPageSelected(position: Int) {
+                viewPagerIndex = position
+            }
+        })
+        // viewpager click event
         myPager?.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putInt("gameID", list[viewPagerIndex].id)
             val detailFragment = DetailFragment()
+            detailFragment.arguments = bundle
             fragmentManager?.beginTransaction()?.apply {
                 replace(R.id.frameLayout, detailFragment)
                 commit()
@@ -106,8 +144,8 @@ class HomeFragment : Fragment() {
 
     fun fillListView(url: String, count: Int) {
         val tvGameNotFound = view?.findViewById<TextView>(R.id.tvGameNotFound)
-        var listView = view?.findViewById<ListView>(R.id.listView)
-        var list = arrayListOf<ModelGameItem?>()
+        val listView = view?.findViewById<ListView>(R.id.listView)
+        val list = arrayListOf<ModelGameItem?>()
         val client = OkHttpClient()
 
         val request = Request.Builder()
@@ -137,14 +175,23 @@ class HomeFragment : Fragment() {
                     }
                 }
                 // searching situation
-                else if (count > 0){
+                else if (count > 0) {
                     for (i in 0 until data.results.size) {
+                        val gameId: Int = data.results[i].id
                         val gameName: String? = data.results[i].name
                         val gameRating: Double = data.results[i].rating
                         val gameReleased: String? = data.results[i].released
                         val gameImgSource: String? = data.results[i].backgroundImage
 
-                        list.add(ModelGameItem(gameName, gameRating.toString(), gameReleased, gameImgSource))
+                        list.add(
+                            ModelGameItem(
+                                gameId,
+                                gameName,
+                                gameRating.toString(),
+                                gameReleased,
+                                gameImgSource
+                            )
+                        )
                     }
 
                     runOnUiThread {
@@ -157,12 +204,21 @@ class HomeFragment : Fragment() {
                 // edittext is empty
                 else {
                     for (i in 3 until data.results.size) {
+                        val gameId: Int = data.results[i].id
                         val gameName: String? = data.results[i].name
                         val gameRating: Double = data.results[i].rating
                         val gameReleased: String? = data.results[i].released
                         val gameImgSource: String? = data.results[i].backgroundImage
 
-                        list.add(ModelGameItem(gameName, gameRating.toString(), gameReleased, gameImgSource))
+                        list.add(
+                            ModelGameItem(
+                                gameId,
+                                gameName,
+                                gameRating.toString(),
+                                gameReleased,
+                                gameImgSource
+                            )
+                        )
                     }
 
                     runOnUiThread {
@@ -173,8 +229,12 @@ class HomeFragment : Fragment() {
                 }
             }
         })
+        // listview click event
         listView?.setOnItemClickListener { parent, view, position, id ->
+            val bundle = Bundle()
+            list[position]?.let { bundle.putInt("gameID", it.id) }
             val detailFragment = DetailFragment()
+            detailFragment.arguments = bundle
             fragmentManager?.beginTransaction()?.apply {
                 replace(R.id.frameLayout, detailFragment)
                 commit()
@@ -218,7 +278,7 @@ class HomeFragment : Fragment() {
                             }
                         }
                         // when edittext is empty default ratings will be listed
-                        if(count == 0) {
+                        if (count == 0) {
                             runOnUiThread {
                                 fillViewPager("https://api.rawg.io/api/games", count)
                                 fillListView("https://api.rawg.io/api/games", count)
@@ -245,41 +305,3 @@ fun Fragment?.runOnUiThread(action: () -> Unit) {
     if (!isAdded) return // Fragment not attached to an Activity
     activity?.runOnUiThread(action)
 }
-
-
-//val client = OkHttpClient()
-//val request = Request.Builder()
-//    .url("https://api.rawg.io/api/games?search=$s")
-//    .get()
-//    .addHeader("key", "1dce486d4f3f411c9d01d69e6849cf84")
-//    .build()
-//
-//val response = client.newCall(request).enqueue(object : Callback {
-//    override fun onFailure(request: Request?, e: IOException?) {
-//        e?.printStackTrace()
-//    }
-//
-//    override fun onResponse(response: Response?) {
-//        var body = response?.body()?.string()
-//        var gson = Gson()
-//
-//        val data = gson.fromJson(
-//            body,
-//            com.example.kotlin_video_games.json_game_list.Response::class.java
-//        )
-//
-//        if (count >= 3) {
-//            runOnUiThread {
-//                fillViewPager("https://api.rawg.io/api/games?search=$s")
-//                fillRecyclerView("https://api.rawg.io/api/games?search=$s")
-//            }
-//        }
-//        else {
-//            runOnUiThread {
-//                fillViewPager("https://api.rawg.io/api/games")
-//                fillRecyclerView("https://api.rawg.io/api/games")
-//            }
-//        }
-//    }
-//})
-
